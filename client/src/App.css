@@ -7,6 +7,7 @@
     display: flex;
     justify-content: space-around;
     margin-top: 50px;
+    flex-wrap: wrap;
 }
 .genarate-container{
     height: 500px;
@@ -34,7 +35,7 @@
     padding: 8px 10px;
     margin-top: 50px;
     border: none;
-    border-bottom: 2px solid rgb(255, 102, 0);
+    border-bottom: 2px solid #ff6600;
     width: 300px;
 }
 .short-btn{
@@ -43,7 +44,7 @@
     font-size: 20px;
     padding: 10px 20px;
     border: none;
-    background-color: rgba(30, 216, 30, 0.712);
+    background-color: #ff6600;
     border-radius: 10px;
     cursor: pointer;
 }
@@ -71,4 +72,26 @@
 }
 .copy-contain{
     display: flex;
+}
+.history-container{
+       border: 2px solid black;
+       padding: 10px 20px;
+       margin: 10px 20px;
+       border-radius: 5px;
+}
+.history{
+    background-color: white;
+    width: 600px;
+    height: 550px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    margin-top: 20px;
+}
+.history::-webkit-scrollbar{
+    width: 1px;
+}
+.history-name{
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
 }

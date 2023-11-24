@@ -59,6 +59,15 @@ app.get("/:slug" , async (req,res)=>{
     res.redirect(link.url);
 } )
 
+app.get('/api/links' , async(req,res)=>{
+    const links = await Link.find({});
+
+    return res.json({
+        success : true,
+        data : links
+    })
+})
+
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`)
 })
