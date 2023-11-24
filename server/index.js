@@ -3,9 +3,13 @@ import mongoose from "mongoose";
 import Link from "./models/link.js";
 import dotenv from "dotenv";
 dotenv.config();
+import path from "path";
 
 const app = express();
 app.use(express.json())
+
+const __dirname = path.resolve();
+
 const PORT = process.env.PORT || 5000;
 
 const connectDb = async () => {
@@ -32,7 +36,7 @@ app.post("/link", async (req, res) => {
         return res.json({
             success: true,
             data: {
-             shortUrl : `${process.env.BASE_URL}/${savedLink.slug}`
+                shortUrl: `${process.env.BASE_URL}/${savedLink.slug}`
             },
             message: "link save succesfully..!"
         })
@@ -44,29 +48,39 @@ app.post("/link", async (req, res) => {
     }
 })
 
-app.get("/:slug" , async (req,res)=>{
-    const {slug} = req.params;
+app.get("/:slug", async (req, res) => {
+    const { slug } = req.params;
 
-    const link = await Link.findOne({slug:slug});
+    const link = await Link.findOne({ slug: slug });
 
-    await Link.updateOne({slug : slug},{$set:{clicks:link.clicks+1}})
-    if(!link){
-    return res.json({
-        success : false,
-        message : "Link not found"
-    })
+    if (!link) {
+        return res.json({
+            success: false,
+            message: "Link not found"
+        })
     }
-    res.redirect(link.url);
-} )
 
-app.get('/api/links' , async(req,res)=>{
+    await Link.updateOne({ slug: slug }, { $set: { clicks: link.clicks + 1 } })
+
+    res.redirect(link.url);
+})
+
+app.get('/api/links', async (req, res) => {
     const links = await Link.find({});
 
     return res.json({
-        success : true,
-        data : links
+        success: true,
+        data: links
     })
 })
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html'))
+    })
+}
 
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`)
